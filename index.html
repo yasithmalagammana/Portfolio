@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Name — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    /* ── TOKENS ── */
+    :root {
+      --bg:       #0A0F1E;
+      --bg2:      #111827;
+      --bg3:      #1a2235;
+      --fg:       #F0F4FF;
+      --muted:    #94A3B8;
+      --accent:   #6366F1;
+      --accent2:  #818CF8;
+      --accent3:  #C7D2FE;
+      --border:   rgba(99,102,241,0.2);
+      --card:     rgba(17,24,39,0.8);
+      --glow:     0 0 40px rgba(99,102,241,0.15);
+      --radius:   12px;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body:    'Inter', sans-serif;
+      --font-mono:    'JetBrains Mono', monospace;
+    }
+    [data-theme="light"] {
+      --bg:     #F8FAFF;
+      --bg2:    #EEF2FF;
+      --bg3:    #E0E7FF;
+      --fg:     #0A0F1E;
+      --muted:  #475569;
+      --border: rgba(99,102,241,0.25);
+      --card:   rgba(238,242,255,0.9);
+      --glow:   0 0 40px rgba(99,102,241,0.1);
+    }
+
+    /* ── RESET ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      transition: background 0.4s, color 0.4s;
+      overflow-x: hidden;
+    }
+    a { color: var(--accent2); text-decoration: none; }
+    a:hover { color: var(--accent3); }
+    img { max-width: 100%; display: block; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2.5rem;
+      background: rgba(10,15,30,0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.4s;
+    }
+    [data-theme="light"] nav { background: rgba(248,250,255,0.9); }
+    .nav-logo {
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+      color: var(--accent2);
+      letter-spacing: -0.02em;
+    }
+    .nav-links { display: flex; gap: 2rem; align-items: center; list-style: none; }
+    .nav-links a {
+      font-size: 0.875rem;
+      color: var(--muted);
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--fg); }
+    .theme-btn {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      color: var(--fg);
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+    .theme-btn:hover { background: var(--accent); border-color: var(--accent); }
+    .hamburger { display: none; background: none; border: none; color: var(--fg); font-size: 1.4rem; cursor: pointer; }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 7rem 2.5rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-grid {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: center; width: 100%;
+    }
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--accent2);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 28px; height: 1px;
+      background: var(--accent);
+    }
+    .hero-name {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.2rem;
+    }
+    .hero-name span { color: var(--accent2); }
+    .hero-typewriter {
+      font-family: var(--font-mono);
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      color: var(--muted);
+      min-height: 2rem;
+      margin-bottom: 1.6rem;
+    }
+    .cursor {
+      display: inline-block;
+      width: 2px; height: 1.2em;
+      background: var(--accent2);
+      margin-left: 2px;
+      vertical-align: middle;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+    .hero-bio {
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 460px;
+      margin-bottom: 2rem;
+      line-height: 1.75;
+    }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.75rem 1.6rem;
+      border-radius: 8px;
+      font-weight: 600; font-size: 0.9rem;
+      cursor: pointer; transition: all 0.2s;
+      font-family: var(--font-body);
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff; border: none;
+    }
+    .btn-primary:hover { background: var(--accent2); color: #fff; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,102,241,0.35); }
+    .btn-outline {
+      background: transparent;
+      color: var(--fg);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent2); transform: translateY(-2px); }
+    .hero-photo-wrap {
+      display: flex; justify-content: center; align-items: center;
+      position: relative;
+    }
+    .hero-photo-ring {
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      animation: spin-ring 20s linear infinite;
+      background: conic-gradient(from 0deg, transparent 60%, var(--accent) 80%, transparent 100%);
+      padding: 4px;
+    }
+    @keyframes spin-ring { to { transform: rotate(360deg); } }
+    .hero-photo {
+      width: 308px; height: 308px;
+      border-radius: 50%;
+      background: var(--bg2);
+      object-fit: cover;
+      border: 4px solid var(--bg);
+      position: relative; z-index: 1;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-photo-placeholder {
+      font-size: 7rem;
+      color: var(--border);
+    }
+    .hero-bg-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.12;
+      pointer-events: none;
+    }
+    .orb1 { width: 500px; height: 500px; background: var(--accent); top: -100px; right: -150px; }
+    .orb2 { width: 300px; height: 300px; background: #818CF8; bottom: -50px; left: -100px; }
+
+    /* ── SECTIONS ── */
+    section { padding: 6rem 2.5rem; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent2);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .section-label::before { content: ''; display: inline-block; width: 20px; height: 1px; background: var(--accent); }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 3rem;
+    }
+    .section-title span { color: var(--accent2); }
+
+    /* ── EDUCATION ── */
+    #education { background: var(--bg2); }
+    .edu-timeline { display: flex; flex-direction: column; gap: 1.5rem; }
+    .edu-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.8rem 2rem;
+      display: grid; grid-template-columns: auto 1fr;
+      gap: 1.5rem; align-items: start;
+      transition: transform 0.2s, box-shadow 0.2s;
+      backdrop-filter: blur(8px);
+    }
+    .edu-card:hover { transform: translateY(-3px); box-shadow: var(--glow); }
+    .edu-icon {
+      width: 48px; height: 48px;
+      background: rgba(99,102,241,0.12);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; color: var(--accent2);
+      flex-shrink: 0;
+    }
+    .edu-degree { font-family: var(--font-display); font-weight: 600; font-size: 1.05rem; margin-bottom: 0.2rem; }
+    .edu-school { color: var(--accent2); font-size: 0.9rem; font-weight: 500; margin-bottom: 0.3rem; }
+    .edu-meta { color: var(--muted); font-size: 0.82rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+    .edu-meta span { display: flex; align-items: center; gap: 0.3rem; }
+
+    /* ── PROJECTS ── */
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.8rem;
+      display: flex; flex-direction: column; gap: 1rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      backdrop-filter: blur(8px);
+    }
+    .project-card:hover { transform: translateY(-4px); box-shadow: var(--glow); }
+    .project-header { display: flex; justify-content: space-between; align-items: flex-start; }
+    .project-icon { font-size: 1.6rem; }
+    .project-links { display: flex; gap: 0.6rem; }
+    .project-link {
+      width: 32px; height: 32px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+    .project-link:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .project-title { font-family: var(--font-display); font-weight: 600; font-size: 1.05rem; }
+    .project-desc { color: var(--muted); font-size: 0.88rem; line-height: 1.6; flex: 1; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 0.25rem 0.65rem;
+      background: rgba(99,102,241,0.1);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--accent3);
+    }
+
+    /* ── ACHIEVEMENTS ── */
+    #achievements { background: var(--bg2); }
+    .achievements-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.2rem; }
+    .achievement-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      display: flex; gap: 1rem; align-items: flex-start;
+      transition: transform 0.2s, box-shadow 0.2s;
+      backdrop-filter: blur(8px);
+    }
+    .achievement-card:hover { transform: translateY(-3px); box-shadow: var(--glow); }
+    .achievement-icon { font-size: 1.6rem; flex-shrink: 0; margin-top: 0.1rem; }
+    .achievement-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.2rem; }
+    .achievement-desc { color: var(--muted); font-size: 0.82rem; line-height: 1.5; }
+    .achievement-year { font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent2); margin-top: 0.4rem; }
+
+    /* ── CONTACT ── */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+    .contact-intro { color: var(--muted); font-size: 1rem; line-height: 1.75; margin-bottom: 2rem; }
+    .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+    .contact-link-card {
+      display: flex; align-items: center; gap: 1rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.4rem;
+      color: var(--fg);
+      transition: all 0.2s;
+      backdrop-filter: blur(8px);
+    }
+    .contact-link-card:hover { border-color: var(--accent); transform: translateX(4px); color: var(--accent2); }
+    .contact-link-icon {
+      width: 40px; height: 40px;
+      background: rgba(99,102,241,0.12);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; color: var(--accent2);
+      flex-shrink: 0;
+    }
+    .contact-link-label { font-size: 0.78rem; color: var(--muted); margin-bottom: 0.1rem; }
+    .contact-link-value { font-weight: 500; font-size: 0.9rem; }
+    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-label { font-size: 0.8rem; font-weight: 500; color: var(--muted); letter-spacing: 0.04em; }
+    .form-input, .form-textarea {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      transition: border-color 0.2s;
+      resize: none;
+      width: 100%;
+    }
+    .form-input:focus, .form-textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    .form-textarea { min-height: 130px; }
+
+    /* ── CHATBOT ── */
+    .chatbot-fab {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 200;
+      width: 56px; height: 56px;
+      background: var(--accent);
+      border: none; border-radius: 50%;
+      color: #fff; font-size: 1.4rem;
+      cursor: pointer;
+      box-shadow: 0 8px 32px rgba(99,102,241,0.45);
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+    .chatbot-fab:hover { background: var(--accent2); transform: scale(1.08); }
+    .chatbot-window {
+      position: fixed; bottom: 5.5rem; right: 2rem; z-index: 200;
+      width: 360px; max-height: 520px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      display: flex; flex-direction: column;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+      transform: scale(0.9) translateY(20px);
+      opacity: 0; pointer-events: none;
+      transform-origin: bottom right;
+      transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .chatbot-window.open { transform: scale(1) translateY(0); opacity: 1; pointer-events: all; }
+    .chatbot-header {
+      padding: 1rem 1.2rem;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 0.8rem;
+      border-radius: 16px 16px 0 0;
+      background: rgba(99,102,241,0.08);
+    }
+    .chatbot-avatar {
+      width: 36px; height: 36px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+    }
+    .chatbot-title { font-weight: 600; font-size: 0.9rem; }
+    .chatbot-subtitle { font-size: 0.72rem; color: var(--muted); }
+    .chatbot-close {
+      margin-left: auto;
+      background: none; border: none; color: var(--muted);
+      font-size: 1rem; cursor: pointer; padding: 0.2rem;
+    }
+    .chatbot-messages {
+      flex: 1; overflow-y: auto; padding: 1rem;
+      display: flex; flex-direction: column; gap: 0.8rem;
+    }
+    .chatbot-messages::-webkit-scrollbar { width: 4px; }
+    .chatbot-messages::-webkit-scrollbar-track { background: transparent; }
+    .chatbot-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+    .msg {
+      max-width: 85%;
+      padding: 0.65rem 0.9rem;
+      border-radius: 12px;
+      font-size: 0.85rem; line-height: 1.55;
+    }
+    .msg-bot {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+    .msg-user {
+      background: var(--accent);
+      color: #fff;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+    .msg-typing { display: flex; gap: 4px; align-items: center; }
+    .msg-typing span {
+      width: 6px; height: 6px;
+      background: var(--muted);
+      border-radius: 50%;
+      animation: bounce 1.2s ease-in-out infinite;
+    }
+    .msg-typing span:nth-child(2) { animation-delay: 0.15s; }
+    .msg-typing span:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes bounce { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-6px); } }
+    .chatbot-input-row {
+      padding: 0.8rem 1rem;
+      border-top: 1px solid var(--border);
+      display: flex; gap: 0.6rem;
+    }
+    .chatbot-input {
+      flex: 1;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.6rem 0.9rem;
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+    }
+    .chatbot-input:focus { outline: none; border-color: var(--accent); }
+    .chatbot-send {
+      background: var(--accent);
+      border: none; border-radius: 8px;
+      width: 36px; height: 36px;
+      color: #fff; font-size: 0.9rem;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+    .chatbot-send:hover { background: var(--accent2); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 2.5rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+    .footer-inner { max-width: 1100px; margin: 0 auto; }
+    .footer-socials { display: flex; justify-content: center; gap: 1rem; margin-bottom: 1.2rem; }
+    .social-btn {
+      width: 38px; height: 38px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); font-size: 1rem;
+      transition: all 0.2s;
+    }
+    .social-btn:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.6s, transform 0.6s; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.2rem; }
+      .nav-links { display: none; flex-direction: column; background: var(--bg2); position: absolute; top: 100%; left: 0; right: 0; padding: 1.5rem; border-bottom: 1px solid var(--border); gap: 1.2rem; }
+      .nav-links.open { display: flex; }
+      .hamburger { display: block; }
+      .hero-grid { grid-template-columns: 1fr; text-align: center; gap: 2rem; }
+      .hero-photo-wrap { order: -1; }
+      .hero-photo-ring { width: 220px; height: 220px; }
+      .hero-photo { width: 212px; height: 212px; }
+      .hero-btns { justify-content: center; }
+      .hero-bio { margin: 0 auto 2rem; }
+      section { padding: 4rem 1.2rem; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .chatbot-window { width: calc(100vw - 2rem); right: 1rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-photo-ring { animation: none; }
+      .cursor { animation: none; }
+      * { transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <span class="nav-logo">&lt;Yasith Lakshan /&gt;</span>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#achievements">Achievements</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div style="display:flex;gap:0.8rem;align-items:center">
+    <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+    <button class="hamburger" id="hamburger"><i class="fa fa-bars"></i></button>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="hero-bg-orb orb1"></div>
+  <div class="hero-bg-orb orb2"></div>
+  <div class="hero-grid">
+    <div class="hero-content">
+      <div class="hero-eyebrow">Available for opportunities</div>
+      <h1 class="hero-name">Hi, I'm <span>Yasith Lakshan</span></h1>
+      <div class="hero-typewriter">
+        <span id="typewriter"></span><span class="cursor"></span>
+      </div>
+      <p class="hero-bio">
+        A passionate Data Science student at SLTC, building things 
+        that live on the web. I love turning complex problems into clean, elegant 
+        solutions with code.
+      </p>
+      <div class="hero-btns">
+        <a href="#projects" class="btn btn-primary"><i class="fa fa-code"></i> View Projects</a>
+        <a href="your-cv.pdf" download class="btn btn-outline"><i class="fa fa-download"></i> Download CV</a>
+      </div>
+    </div>
+    <div class="hero-photo-wrap">
+      <div class="hero-photo-ring">
+        <div class="hero-photo">
+          <img src="Copilot_20260701_103738.png" alt="Yasith Lakshan" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── EDUCATION ── -->
+<section id="education">
+  <div class="section-inner">
+    <div class="section-label">Background</div>
+    <h2 class="section-title">My <span>Education</span></h2>
+    <div class="edu-timeline reveal">
+      <div class="edu-card">
+        <div class="edu-icon"><i class="fa fa-graduation-cap"></i></div>
+        <div>
+          <div class="edu-degree">BSc (Hons) in Data Science</div>
+          <div class="edu-school">Sri Lanka Technology Campus</div>
+          <div class="edu-meta">
+            <span><i class="fa fa-calendar"></i> 2025 – Present</span>
+            <span><i class="fa fa-map-marker"></i> Colombo, Sri Lanka</span>
+            <span><i class="fa fa-star"></i> GPA: 3.8 / 4.0</span>
+          </div>
+        </div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-icon"><i class="fa fa-school"></i></div>
+        <div>
+          <div class="edu-degree">G.C.E. Advanced Level — Physical Science</div>
+          <div class="edu-school">Dharmapala Vidyalaya Pannipitiya</div>
+          <div class="edu-meta">
+            <span><i class="fa fa-calendar"></i> 2021 – 2023</span>
+            <span><i class="fa fa-map-marker"></i> Sri Lanka</span>
+            <span><i class="fa fa-award"></i>3 S Passes</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROJECTS ── -->
+<section id="projects">
+  <div class="section-inner">
+    <div class="section-label">Work</div>
+    <h2 class="section-title">Featured <span>Projects</span></h2>
+    <div class="projects-grid">
+
+      <div class="project-card reveal">
+        <div class="project-header">
+          <span class="project-icon">🛒</span>
+          <div class="project-links">
+            <a href="#" class="project-link" title="GitHub"><i class="fab fa-github"></i></a>
+            <a href="#" class="project-link" title="Live Demo"><i class="fa fa-external-link-alt"></i></a>
+          </div>
+        </div>
+        <div class="project-title">E-Commerce Platform</div>
+        <div class="project-desc">A full-stack online store with user authentication, product management, and a Stripe-powered checkout flow. Includes an admin dashboard and real-time inventory updates.</div>
+        <div class="project-tags">
+          <span class="tag">React</span>
+          <span class="tag">Node.js</span>
+          <span class="tag">MongoDB</span>
+          <span class="tag">Stripe</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-header">
+          <span class="project-icon">🤖</span>
+          <div class="project-links">
+            <a href="#" class="project-link" title="GitHub"><i class="fab fa-github"></i></a>
+            <a href="#" class="project-link" title="Live Demo"><i class="fa fa-external-link-alt"></i></a>
+          </div>
+        </div>
+        <div class="project-title">AI Study Companion</div>
+        <div class="project-desc">A web app that uses the OpenAI API to help students generate quizzes, summaries, and flashcards from uploaded lecture notes. Reduced study time for testers by ~40%.</div>
+        <div class="project-tags">
+          <span class="tag">Python</span>
+          <span class="tag">Flask</span>
+          <span class="tag">OpenAI API</span>
+          <span class="tag">React</span>
+        </div>
+      </div>
+
+      <div class="project-card reveal">
+        <div class="project-header">
+          <span class="project-icon">📊</span>
+          <div class="project-links">
+            <a href="#" class="project-link" title="GitHub"><i class="fab fa-github"></i></a>
+            <a href="#" class="project-link" title="Live Demo"><i class="fa fa-external-link-alt"></i></a>
+          </div>
+        </div>
+        <div class="project-title">Data Visualisation Dashboard</div>
+        <div class="project-desc">An interactive analytics dashboard for exploring public datasets. Features dynamic charts, filter controls, and export to CSV/PDF. Built for a university data science module.</div>
+        <div class="project-tags">
+          <span class="tag">D3.js</span>
+          <span class="tag">Vue</span>
+          <span class="tag">FastAPI</span>
+          <span class="tag">PostgreSQL</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── ACHIEVEMENTS ── -->
+<section id="achievements">
+  <div class="section-inner">
+    <div class="section-label">Recognition</div>
+    <h2 class="section-title">Achievements &amp; <span>Certifications</span></h2>
+    <div class="achievements-grid">
+      <div class="achievement-card reveal">
+        <div class="achievement-icon">🏆</div>
+        <div>
+          <div class="achievement-title">1st Place — University Hackathon</div>
+          <div class="achievement-desc">Led a team of four to build a climate-data monitoring platform in 24 hours. Judged on technical complexity, design, and impact.</div>
+          <div class="achievement-year">2024</div>
+        </div>
+      </div>
+      <div class="achievement-card reveal">
+        <div class="achievement-icon">📜</div>
+        <div>
+          <div class="achievement-title">AWS Certified Cloud Practitioner</div>
+          <div class="achievement-desc">Demonstrates foundational knowledge of AWS cloud services, security, and architecture principles.</div>
+          <div class="achievement-year">2024</div>
+        </div>
+      </div>
+      <div class="achievement-card reveal">
+        <div class="achievement-icon">🎓</div>
+        <div>
+          <div class="achievement-title">Dean's List — Academic Excellence</div>
+          <div class="achievement-desc">Recognised on the Dean's List for achieving a GPA above 3.7 in the first two semesters.</div>
+          <div class="achievement-year">2023 – 2024</div>
+        </div>
+      </div>
+      <div class="achievement-card reveal">
+        <div class="achievement-icon">💡</div>
+        <div>
+          <div class="achievement-title">Meta Front-End Developer Certificate</div>
+          <div class="achievement-desc">Completed the professional certificate covering React, UI/UX principles, and responsive design via Coursera.</div>
+          <div class="achievement-year">2023</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-label">Get In Touch</div>
+    <h2 class="section-title">Let's <span>Connect</span></h2>
+    <div class="contact-grid">
+      <div>
+        <p class="contact-intro">
+          I'm currently open to internship and project opportunities. Whether you have a 
+          question, a collaboration idea, or just want to say hi — my inbox is always open.
+        </p>
+        <div class="contact-links">
+          <a href="mailto:your@email.com" class="contact-link-card">
+            <div class="contact-link-icon"><i class="fa fa-envelope"></i></div>
+            <div>
+              <div class="contact-link-label">Email</div>
+              <div class="contact-link-value">yasithmalagammana@gmail.com</div>
+            </div>
+          </a>
+          <a href="https://github.com/yourusername" target="_blank" class="contact-link-card">
+            <div class="contact-link-icon"><i class="fab fa-github"></i></div>
+            <div>
+              <div class="contact-link-label">GitHub</div>
+              <div class="contact-link-value">github.com/yasithmalagammana</div>
+            </div>
+          </a>
+          <a href="https://linkedin.com/in/yourusername" target="_blank" class="contact-link-card">
+            <div class="contact-link-icon"><i class="fab fa-linkedin-in"></i></div>
+            <div>
+              <div class="contact-link-label">LinkedIn</div>
+              <div class="contact-link-value">linkedin.com/in/yasithmalagammana</div>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div>
+        <div class="contact-form" id="contactForm">
+          <div class="form-group">
+            <label class="form-label">Name</label>
+            <input class="form-input" type="text" placeholder="Your full name" id="cf-name"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input class="form-input" type="email" placeholder="your@email.com" id="cf-email"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Message</label>
+            <textarea class="form-textarea" placeholder="Tell me what you're working on..." id="cf-msg"></textarea>
+          </div>
+          <button class="btn btn-primary" onclick="submitForm()" style="align-self:flex-start">
+            <i class="fa fa-paper-plane"></i> Send Message
+          </button>
+          <div id="cf-feedback" style="font-size:0.85rem;color:var(--accent2);display:none;padding-top:0.4rem;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-socials">
+      <a href="https://github.com/yourusername" target="_blank" class="social-btn"><i class="fab fa-github"></i></a>
+      <a href="https://linkedin.com/in/yourusername" target="_blank" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
+      <a href="mailto:your@email.com" class="social-btn"><i class="fa fa-envelope"></i></a>
+    </div>
+    <p>Designed &amp; built by <strong>Yasith Lakshan</strong> · 2025</p>
+    <p style="margin-top:0.3rem;font-size:0.78rem;opacity:0.6">CCS1310 — Professional Practice Portfolio</p>
+  </div>
+</footer>
+
+<!-- ── CHATBOT ── -->
+<button class="chatbot-fab" id="chatFab" title="Chat with my AI assistant">💬</button>
+<div class="chatbot-window" id="chatWindow">
+  <div class="chatbot-header">
+    <div class="chatbot-avatar">🤖</div>
+    <div>
+      <div class="chatbot-title">Portfolio Assistant</div>
+      <div class="chatbot-subtitle">Ask me anything about Your Name</div>
+    </div>
+    <button class="chatbot-close" id="chatClose">✕</button>
+  </div>
+  <div class="chatbot-messages" id="chatMessages">
+    <div class="msg msg-bot">👋 Hi! I'm an AI assistant for <strong>Your Name's</strong> portfolio. Ask me about their projects, skills, education, or availability!</div>
+  </div>
+  <div class="chatbot-input-row">
+    <input class="chatbot-input" type="text" placeholder="Ask something..." id="chatInput"/>
+    <button class="chatbot-send" id="chatSend"><i class="fa fa-paper-plane"></i></button>
+  </div>
+</div>
+
+<script>
+// ── THEME TOGGLE ──
+const themeBtn = document.getElementById('themeBtn');
+const html = document.documentElement;
+let dark = true;
+themeBtn.addEventListener('click', () => {
+  dark = !dark;
+  html.setAttribute('data-theme', dark ? 'dark' : 'light');
+  themeBtn.textContent = dark ? '🌙' : '☀️';
+});
+
+// ── HAMBURGER ──
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('navLinks').classList.toggle('open');
+});
+
+// ── TYPEWRITER ──
+const phrases = [
+  'Data Science Student',
+  'Full-Stack Developer',
+  'Problem Solver',
+  'Open Source Enthusiast',
+];
+let pi = 0, ci = 0, deleting = false;
+const tw = document.getElementById('typewriter');
+function type() {
+  const phrase = phrases[pi % phrases.length];
+  if (!deleting) {
+    tw.textContent = phrase.slice(0, ++ci);
+    if (ci === phrase.length) { deleting = true; setTimeout(type, 1800); return; }
+  } else {
+    tw.textContent = phrase.slice(0, --ci);
+    if (ci === 0) { deleting = false; pi++; }
+  }
+  setTimeout(type, deleting ? 45 : 85);
+}
+type();
+
+// ── SCROLL REVEAL ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => {
+  el.style.transitionDelay = (Array.from(el.parentElement?.children || []).indexOf(el) * 0.08) + 's';
+  observer.observe(el);
+});
+
+// ── CONTACT FORM ──
+function submitForm() {
+  const name = document.getElementById('cf-name').value.trim();
+  const email = document.getElementById('cf-email').value.trim();
+  const msg = document.getElementById('cf-msg').value.trim();
+  const fb = document.getElementById('cf-feedback');
+  if (!name || !email || !msg) { fb.style.display = 'block'; fb.textContent = '⚠️ Please fill in all fields.'; return; }
+  fb.style.display = 'block';
+  fb.textContent = '✅ Message sent! I\'ll get back to you soon.';
+  document.getElementById('cf-name').value = '';
+  document.getElementById('cf-email').value = '';
+  document.getElementById('cf-msg').value = '';
+}
+
+// ── CHATBOT ──
+const fab = document.getElementById('chatFab');
+const win = document.getElementById('chatWindow');
+const closeBtn = document.getElementById('chatClose');
+const input = document.getElementById('chatInput');
+const sendBtn = document.getElementById('chatSend');
+const messages = document.getElementById('chatMessages');
+
+fab.addEventListener('click', () => win.classList.toggle('open'));
+closeBtn.addEventListener('click', () => win.classList.remove('open'));
+input.addEventListener('keydown', e => { if (e.key === 'Enter') sendMessage(); });
+sendBtn.addEventListener('click', sendMessage);
+
+// ── PORTFOLIO CONTEXT for AI ──
+const PORTFOLIO_CONTEXT = `
+You are a friendly AI assistant embedded in the personal portfolio website of [Your Name], a Data Science student at [Your University] in Sri Lanka.
+
+About [Your Name]:
+- Studying BSc (Hons) in Data Science since 2023
+- Completed A/Levels (Physical Science) with 3 A passes in 2022
+- Skills: JavaScript, React, Node.js, Python, Flask, MongoDB, PostgreSQL, AWS
+
+Projects:
+1. E-Commerce Platform (React, Node.js, MongoDB, Stripe) — full-stack online store
+2. AI Study Companion (Python, Flask, OpenAI API) — quiz/summary generator from notes
+3. Data Visualisation Dashboard (D3.js, Vue, FastAPI, PostgreSQL) — analytics dashboard
+
+Achievements:
+- 1st Place in University Hackathon 2024
+- AWS Certified Cloud Practitioner 2024
+- Dean's List 2023–2024
+- Meta Front-End Developer Certificate 2023
+
+Contact: your@email.com | github.com/yourusername | linkedin.com/in/yourusername
+
+Currently open to internship and project opportunities.
+
+Answer questions about this person concisely and helpfully. If unsure of something specific, say they can reach out via email. Keep replies under 80 words.
+`;
+
+function addMsg(text, role) {
+  const div = document.createElement('div');
+  div.className = `msg msg-${role}`;
+  div.innerHTML = text;
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
+  return div;
+}
+
+function showTyping() {
+  const div = document.createElement('div');
+  div.className = 'msg msg-bot';
+  div.innerHTML = '<div class="msg-typing"><span></span><span></span><span></span></div>';
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
+  return div;
+}
+
+async function sendMessage() {
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  addMsg(text, 'user');
+  const typing = showTyping();
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1000,
+        system: PORTFOLIO_CONTEXT,
+        messages: [{ role: 'user', content: text }]
+      })
+    });
+    const data = await res.json();
+    const reply = data.content?.find(b => b.type === 'text')?.text || 'Sorry, I couldn\'t respond right now.';
+    typing.remove();
+    addMsg(reply, 'bot');
+  } catch (e) {
+    typing.remove();
+    addMsg('⚠️ Connection error. Please try again later.', 'bot');
+  }
+}
+</script>
+</body>
+</html>
